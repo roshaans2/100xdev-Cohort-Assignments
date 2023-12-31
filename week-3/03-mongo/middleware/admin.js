@@ -1,7 +1,18 @@
-// Middleware for handling auth
-function adminMiddleware(req, res, next) {
-    // Implement admin auth logic
-    // You need to check the headers and validate the admin from the admin DB. Check readme for the exact headers to be expected
+const {Admin} = require("../db/index")
+const bcrypt = require("bcrypt")
+
+async function adminMiddleware(req, res, next) {
+    const username = req.headers["username"]
+    const password = req.headers["password"]
+    const user = await Admin.findOne({username:username})
+    if(!user){
+        res.status(404).send("You are not a admin")
+    }
+    const isValid = await bcrypt.compare(password,user.password)
+    if(!isValid){
+        res.status(404).send("Invalid Password")
+    }
+    next()
 }
 
 module.exports = adminMiddleware;
