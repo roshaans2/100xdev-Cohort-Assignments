@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export function Assignment1() {
     const inputRef = useRef();
 
-    useEffect(() => {
+    useEffect(() => {     
         inputRef.current.focus() 
     }, [inputRef]);
 
